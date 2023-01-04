@@ -11,7 +11,7 @@ export class Pokeapi{
                 headers: {
                     'Content-Type' : 'application/json'
                 },
-                method: 'GET',
+                method: 'GET'
                 
 
             });
