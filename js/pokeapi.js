@@ -3,7 +3,7 @@ export class Pokeapi{
         this.pokemones = null;
         this.pokemonesDiv = document.getElementById("pokemones");
         
-        this.obtenerPokemones().bind(this);
+        this.obtenerPokemones().bind(this)();
     
 
     }
@@ -26,13 +26,14 @@ export class Pokeapi{
     drawPokemones(){
         let f =async ()=>{
         if(this.pokemones){
+            this.pokemonesDiv.innerHTML = "";
             let results = this.pokemones.results;//resilts es un array de object con dos atributos: name y url
             for(let i =0; i < results.length; i++){
                 let pokemon = results[i];
                 const respuestaPokemon = await fetch(pokemon.url);
                 if(respuestaPokemon.status === 200){
                     let infoPokemon = await respuestaPokemon.json();
-                    console.log(infoPokemon);
+                    this.pokemonesDiv.appendChild(this.drawPokemon(infoPokemon));
                 }
             }
        }
@@ -41,30 +42,23 @@ export class Pokeapi{
     }
     drawPokemon(infoPokemon){
         let contenedor = document.createElement("div");
-        contenedor.classList.add("col");
-        contenedor.classList.add("mb-3");
-
+        contenedor.classList.add("col","mb-3");
+        
         let tarjeta = document.createElement("div");
-        tarjeta.classList.add("card");
-        tarjeta.classList.add("shadow");
-        tarjeta.classList.add("bg-primary");
-        tarjeta.classList.add("bg-gradient");
-        tarjeta.classList.add("rounded");
-        tarjeta.classList.add("text-center");
+        tarjeta.classList.add("card","shadow","bg-primary","bg-gradient","rounded","text-center");
+       
 
         let imagen = document.createElement("img");
-        imagen.classList.add("card-img-top");
-        imagen.classList.add("w-50");
-        imagen.classList.add("mx-auto");
+        imagen.classList.add("card-img-top", "w-50","mx-auto");
         imagen.src = this.obtenerUrlImagen(infoPokemon.id);
 
-        let body = Document.createElement("div");
+        let body = document.createElement("div");
         body.classList.add("card-body");
 
-        let id = document.getElementById("small");
+        let id = document.createElement("small");
         id.classList.add("card-text");
 
-        let idpokemon = document.getElementById("span");
+        let idpokemon = document.createElement("span");
         idpokemon.innerHTML = infoPokemon.id;
         
 
@@ -73,9 +67,7 @@ export class Pokeapi{
         titulo.innerText = infoPokemon.name;
 
         let tipo = document.createElement("span");
-        tipo.classList.add("badge");
-        tipo.classList.add("rounded-pill");
-        tipo.classList.add("bg-secondary");
+        tipo.classList.add("badge", "rounded-pill","bg-secondary");
         tipo.innerHTML = infoPokemon.species.name;
 
         id.appendChild(idpokemon);
